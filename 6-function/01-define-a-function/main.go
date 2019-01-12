@@ -71,4 +71,9 @@ func main() {
 		fmt.Println(err)
 	}
 	// FooWithArgsAndMultiReturn: Error
+
+	f := func(name string) string {
+		return fmt.Sprintf("My name is %s", name)
+	}
+	f("mike")
 }
