@@ -76,10 +76,110 @@ func Println(a ...interface{}) (n int, err error)
 
 其实很简单，这里我们以当前文件夹中的mylib库为例子，我们推送到git上后，会获得该库的一个访问路径，以下是实例的连接：
 ```
+https://github.com/zhangmingkai4315/golang-essentials/tree/master/12-documentation/mylib
+```
+
+我们将该链接放置到godoc中的搜索框后点击Go按钮即可，系统会自动的重定向到一个新的URL:
+```
+https://godoc.org/
+```
+而且所有的文档信息会自动的显示出来。这时候任何人如果通过搜索框都可以查询到该库的相关信息。
+
+同时我们可以使用godoc命令行来查询相关链接下的文档信息：
+
+```sh
+ godoc github.com/zhangmingkai4315/golang-essentials/12-documentation/mylib
 
 ```
 
+#### 12.4 编写文档
 
+如何编写文档，可以通过学习一些标准库的编写规范，比如errors库, 代码一般包含以下几个部分：
+- 头部版权信息
+- 包通用描述信息
+- 针对具体函数或者类型的定义信息（第一个单词必须以类型名称或者函数名开始）
 
-[Golang官方文档](https://golang.org/doc/)
-[godoc.org索引](https://godoc.org/)
+如下面的实例所示：
+
+```
+// Copyright 2011 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package errors implements functions to manipulate errors.
+package errors
+
+// New returns an error that formats as the given text.
+func New(text string) error {
+	return &errorString{text}
+}
+
+// errorString is a trivial implementation of error.
+type errorString struct {
+	s string
+}
+
+func (e *errorString) Error() string {
+	return e.s
+}
+
+```
+
+对于一些包的描述信息如果比较长，包含一些示例的话，可以创建一个单独的文件用于保存这些信息，比如fmt包中存在一个独立的文件doc.go文件来保存这些信息，具体实现可访问链接[doc.go](https://golang.org/src/fmt/doc.go)
+
+如果我们查询标准库的话，会看到很多库都带有example示例，这些示例其实也是通过解析代码库中的相关代码提取出来的，而且这些示例提取后，可以直接形成可执行的go代码。
+
+比如golang/example示例中的stringutil包，为了提供示例代码我们可以编写example_test.go文件：
+```
+package stringutil_test
+
+import (
+    "fmt"
+
+    "github.com/golang/example/stringutil"
+)
+
+func ExampleReverse() {
+    fmt.Println(stringutil.Reverse("hello"))
+    // Output: olleh
+}
+```
+
+文件的package名称为包名称加test，同时示例函数必须以Examle开头，对任何函数或者类型的示例后面跟函数名称和结构体名称。
+示例代码中的```Output: olleh```会自动被转换输出
+
+![](https://blog.golang.org/examples/reverse.png)
+
+同时当我们使用go test的时候，example代码也会被自动执行测试
+```
+$ go test -v
+=== RUN TestReverse
+--- PASS: TestReverse (0.00s)
+=== RUN: ExampleReverse
+--- PASS: ExampleReverse (0.00s)
+PASS
+ok      github.com/golang/example/stringutil    0.009s
+```
+
+这里的example的测试比较实际的输出和Output中定义的输出，**如果不包含Output也就不会执行相关测试**
+
+多个输出的时候，按行完成output的编写：
+
+```go
+
+    fmt.Println(people)
+    sort.Sort(ByAge(people))
+    fmt.Println(people)
+
+    // Output:
+    // [Bob: 31 John: 42 Michael: 17 Jenny: 26]
+    // [Michael: 17 Jenny: 26 Bob: 31 John: 42]
+```
+
+#### 12.5 附录
+
+[1.golang官方文档](https://golang.org/doc/)
+
+[2.godoc.org索引](https://godoc.org/)
+
+[3.example](https://blog.golang.org/examples)
