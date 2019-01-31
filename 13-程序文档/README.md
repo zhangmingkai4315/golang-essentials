@@ -1,4 +1,5 @@
-#### 12.1 go doc命令
+### 13. 程序文档
+#### 13.1 go doc命令
 
 go语言内置的doc子命令可以通过命令行来查询文档，我们可以使用go help命令来查看如何使用go doc
 
@@ -44,12 +45,12 @@ func Println(a ...interface{}) (n int, err error)
 ```
 另外默认情况下直接使用go doc将列举当前位置的库的文档信息，后面我们可以看到如何去编写自己写的库的文档信息。
  
-#### 12.2 godoc命令
+#### 13.2 godoc命令
 
 go语言安装后会自动的同时安装godoc命令，这个命令有一个内置的web服务，可以在本地启动一个标准库的文档服务器，用于查询当前标准库的相关内容。使用下面的命令启动该web服务：
 
 ```sh
-godoc.exe -http=127.0.0.1:8080
+godoc.exe -http=137.0.0.1:8080
 ```
 可以通过web服务中的搜索框或者Packages来查询，同时godoc本身支持类似于go doc查询库包的命令
 
@@ -70,13 +71,13 @@ func Println(a ...interface{}) (n int, err error)
 
 ```
 
-#### 12.3 使用godoc索引
+#### 13.3 使用godoc索引
 
 假如自己写了一个简单的go语言的库，想要别人能够通过godoc检索到，该如何操作？
 
 其实很简单，这里我们以当前文件夹中的mylib库为例子，我们推送到git上后，会获得该库的一个访问路径，以下是实例的连接：
 ```
-https://github.com/zhangmingkai4315/golang-essentials/tree/master/12-documentation/mylib
+https://github.com/zhangmingkai4315/golang-essentials/tree/master/13-documentation/mylib
 ```
 
 我们将该链接放置到godoc中的搜索框后点击Go按钮即可，系统会自动的重定向到一个新的URL:
@@ -88,11 +89,11 @@ https://godoc.org/
 同时我们可以使用godoc命令行来查询相关链接下的文档信息：
 
 ```sh
- godoc github.com/zhangmingkai4315/golang-essentials/12-documentation/mylib
+ godoc github.com/zhangmingkai4315/golang-essentials/13-documentation/mylib
 
 ```
 
-#### 12.4 编写文档
+#### 13.4 编写文档
 
 如何编写文档，可以通过学习一些标准库的编写规范，比如errors库, 代码一般包含以下几个部分：
 - 头部版权信息
@@ -176,7 +177,7 @@ ok      github.com/golang/example/stringutil    0.009s
     // [Michael: 17 Jenny: 26 Bob: 31 John: 42]
 ```
 
-#### 12.5 附录
+#### 13.5 附录
 
 [1.golang官方文档](https://golang.org/doc/)
 

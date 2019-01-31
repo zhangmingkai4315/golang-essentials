@@ -1,6 +1,6 @@
-### 10. Channel
+### 11. Channel
 
-#### 10.1 channel基础
+#### 11.1 channel基础
 
 创建一个channel的最简单的方式是通过关键词make来实现，对于用来传递具体的类型的channel,在使用make创建channel的时候需要同时指定，另外channel包含两种类型：
 
@@ -47,7 +47,7 @@ func main() {
 
 
 
-#### 10.2 单向channel
+#### 11.2 单向channel
 
 上面创建的channel都是双向channel，也就是既可以写入也可以读取操作，而单向channel则是仅仅只能读取或者只能写入的channel， 主要用于函数参数或者返回值中使用。比如下面的例子：
 
@@ -82,7 +82,7 @@ func main() {
 
 上述实例中我们通过producer产生一个单向的channel，能够读取数据的channel， 这样可以防止在此之外的程序不会写入数据到channel中。同时我们使用函数consumer来接收一个只读的**单向channel类型**用于消费生产的数据。利用**range来迭代channel中的数据**，需要注意的是，如果channel最后没有close关闭的话，程序会处于琐死状态，consumer会认为这个channel将会传递数据过来因此处于等待状态。因此务必在确定不写入数据后关闭该channel.
 
-#### 10.3 select语句
+#### 11.3 select语句
 
 select语句用于在多个channel中选择数据，一旦任何channel数据可读，则执行对应的语句，**如果在选择的时刻多个channel可读，则随机选择其中一个执行**，我们对于上面的例子进行改造，使其能够实现超时关闭的特性。这里我们引入了一个新的函数time.Ticker()，该函数可以用来计时，返回一个channel类型，一旦时间到期则传递数据到该channel中，我们可以利用该机制来进行超时管理.
 
@@ -151,7 +151,7 @@ func main() {
 }
 ```
 
-#### 10.4 Fan in和Fan out模型
+#### 11.4 Fan in和Fan out模型
 
 Fan in 模型通过接收多个channel的值，将其合并入一个channel，主要用来汇聚数据使用，比如我们有多个producer， 我们可以使用fan in 模型将其汇聚成一个producer. 我们修改原来的代码如下：
 
@@ -253,7 +253,7 @@ func main() {
 
 上面的代码中我们使用worker来接收数据并执行任务，利用两个计数器producerJobCounter和doneCounter来追踪任务的执行情况，其中doneCounter由于多个channel可以同时访问并修改，为了防止并发执行环境下的数据竞争问题，我们通过atomic库来执行数据的增加（原子操作），这里我们启用10个worker来同时消费数据，尝试修改最大的worker数量，可以看到任务的执行数量也会发生变化，实际运行情况下，worker可以设置固定的或者根据任务情况动态修改。
 
- #### 10.5 context上下文管理
+ #### 11.5 context上下文管理
 
 context包主要用与上下文的管理，超时，取消任务等操作，go语言在1.7版本中将原来放在扩展库中的context包转移到了标准库中。在goweb编程中，context被用来管理用户的查询请求链，每一个请求都被放在一个独立的goroutinezhong , 同时程序还会启动多个额外的goroutine来查询数据库，执行rpc请求，这些goroutine集合可以通过context来统一管理，比如取消用户查询的同时关闭所有涉及这个请求的所有goroutine.,从而尽快的回收资源降低消耗。
 
@@ -300,7 +300,7 @@ func main() {
 
 上述的管理器分别用来执行取消，超时，传递数据等操作，具体的例子可以参考对应的官方手册，此处不再一一列出。
 
-#### 10.6 附录
+#### 11.6 附录
 
 - [Go语言经典语句](https://go-proverbs.github.io/)
 - [Golang Pipelines](https://blog.golang.org/pipelines)
