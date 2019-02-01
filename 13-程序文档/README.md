@@ -1,7 +1,10 @@
 ### 13. 程序文档
+
+go命令提供两种查询程序文档的方式，第一种是直接用```go doc```来查询，第二种是通过与go程序一起自动安装的godoc程序来查询，如果仅仅是查询标准库的话，两者基本上输出的内容比较相似，但是godoc提供一些额外的扩展功能，比如内置的web服务，提供网页版的文档检索，同时支持来自于github.com的网站中程序包的文档的查询，后面我们会依次介绍联众文档管理方式。
+
 #### 13.1 go doc命令
 
-go语言内置的doc子命令可以通过命令行来查询文档，我们可以使用go help命令来查看如何使用go doc
+通过命令``go doc`可以来查询相关的程序包文档，我们可以使用go help命令来查看如何使用go doc
 
 ```
 $ go help doc
@@ -52,7 +55,7 @@ go语言安装后会自动的同时安装godoc命令，这个命令有一个内�
 ```sh
 godoc.exe -http=137.0.0.1:8080
 ```
-可以通过web服务中的搜索框或者Packages来查询，同时godoc本身支持类似于go doc查询库包的命令
+可以通过web服务中的搜索框或者Packages来查询，同时godoc本身支持命令行的查询，但是与go doc有所不同，包和函数中间是不包含任何点号连接的，以空格分割。
 
 ```go
 $ godoc fmt Println
@@ -62,14 +65,9 @@ func Println(a ...interface{}) (n int, err error)
     is appended. It returns the number of bytes written and any write error
     encountered.
 
-$ go doc fmt Println
-func Println(a ...interface{}) (n int, err error)
-    Println formats using the default formats for its operands and writes to
-    standard output. Spaces are always added between operands and a newline is
-    appended. It returns the number of bytes written and any write error
-    encountered.
-
 ```
+
+
 
 #### 13.3 使用godoc索引
 
@@ -80,13 +78,9 @@ func Println(a ...interface{}) (n int, err error)
 https://github.com/zhangmingkai4315/golang-essentials/tree/master/13-documentation/mylib
 ```
 
-我们将该链接放置到godoc中的搜索框后点击Go按钮即可，系统会自动的重定向到一个新的URL:
-```
-https://godoc.org/
-```
-而且所有的文档信息会自动的显示出来。这时候任何人如果通过搜索框都可以查询到该库的相关信息。
+我们将该链接放置到godoc中的搜索框后点击Go按钮即可，系统会自动的重定向到一个新的URL，而且所有的文档信息会自动的显示出来。这时候任何人如果通过搜索框都可以查询到该库的相关信息。
 
-同时我们可以使用godoc命令行来查询相关链接下的文档信息：
+同时我们可以使用godoc命令行来查询远程Web链接下的文档信息：
 
 ```sh
  godoc github.com/zhangmingkai4315/golang-essentials/13-documentation/mylib
@@ -95,12 +89,13 @@ https://godoc.org/
 
 #### 13.4 编写文档
 
-如何编写文档，可以通过学习一些标准库的编写规范，比如errors库, 代码一般包含以下几个部分：
+如何编写文档，可以通过学习一些标准库的程序编写规范，这里我们以标准库中的errors库作为实例, 代码文档一般包含以下几个部分，当然这些文档都不是必须存在的，但是为了更好的提升代码的质量，特别是协同编程的情况下，提高代码可阅读的能力，建议尽量包含以下信息：
+
 - 头部版权信息
 - 包通用描述信息
 - 针对具体函数或者类型的定义信息（第一个单词必须以类型名称或者函数名开始）
 
-如下面的实例所示：
+如下面的errors实例所示：
 
 ```
 // Copyright 2011 The Go Authors. All rights reserved.
@@ -125,13 +120,33 @@ func (e *errorString) Error() string {
 }
 
 ```
+每一个包都尽量包含包描述信息，对于一些包的描述信息如果比较长，包含一些示例的话，可以创建一个单独的文件用于保存这些信息，比如fmt包中存在一个独立的文件doc.go文件来保存这些信息，具体实现可访问链接[doc.go](https://golang.org/src/fmt/doc.go)， doc.go文件除了注释信息以外，只包含一个单独的```package fmt```的声明
 
-对于一些包的描述信息如果比较长，包含一些示例的话，可以创建一个单独的文件用于保存这些信息，比如fmt包中存在一个独立的文件doc.go文件来保存这些信息，具体实现可访问链接[doc.go](https://golang.org/src/fmt/doc.go)
 
-如果我们查询标准库的话，会看到很多库都带有example示例，这些示例其实也是通过解析代码库中的相关代码提取出来的，而且这些示例提取后，可以直接形成可执行的go代码。
+对于外部可访问的结构体或者函数对象，编写文档注释的时候要以名称作为首个单词， 比如下面的示例所示：
 
-比如golang/example示例中的stringutil包，为了提供示例代码我们可以编写example_test.go文件：
+```go
+// Compile parses a regular expression and returns, if successful,
+// a Regexp that can be used to match against text.
+func Compile(str string) (*Regexp, error) {
+ ...
+}
+
 ```
+
+对于一组对象的声明go程序允许按组来进行文档注释的编写，如下面所示我们创建了多个错误对象，这些对象由于都可以归于一类，因此我们在定义文档的时候仅需要定义一次即可
+```go
+// Error codes returned by failures to parse an expression.
+var (
+ErrInternal = errors.New("regexp: internal error")
+ErrUnmatchedLpar = errors.New("regexp: unmatched '('")
+ErrUnmatchedRpar = errors.New("regexp: unmatched ')'")
+...
+)
+```
+
+如果我们查询标准库的话，会看到很多库都带有example示例，这些示例其实也是通过解析代码库中的相关代码提取出来的，而且这些示例提取后，可以直接形成可执行的go代码。比如golang/example示例中的stringutil包，为了提供示例代码我们可以编写example_test.go文件：
+```go
 package stringutil_test
 
 import (
@@ -152,7 +167,7 @@ func ExampleReverse() {
 ![](https://blog.golang.org/examples/reverse.png)
 
 同时当我们使用go test的时候，example代码也会被自动执行测试
-```
+```sh
 $ go test -v
 === RUN TestReverse
 --- PASS: TestReverse (0.00s)
@@ -166,7 +181,7 @@ ok      github.com/golang/example/stringutil    0.009s
 
 多个输出的时候，按行完成output的编写：
 
-```go
+```golang
 
     fmt.Println(people)
     sort.Sort(ByAge(people))
@@ -176,11 +191,3 @@ ok      github.com/golang/example/stringutil    0.009s
     // [Bob: 31 John: 42 Michael: 17 Jenny: 26]
     // [Michael: 17 Jenny: 26 Bob: 31 John: 42]
 ```
-
-#### 13.5 附录
-
-[1.golang官方文档](https://golang.org/doc/)
-
-[2.godoc.org索引](https://godoc.org/)
-
-[3.example](https://blog.golang.org/examples)

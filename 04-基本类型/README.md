@@ -1,4 +1,5 @@
 ### 4 go语言基本类型
+
 #### 4.1 number数值类型
 
 使用数值类型用于存储数字，比如整数或者小数，go语言中用于存储数字的类型比较多，比如uint8, uint16, uint32, int, float32 , float64以及一些复数类型。下面的代码中我们通过自动识别的方式存储数值到int和float中。
@@ -94,3 +95,23 @@ const (
 	tb
 )
 ```
+
+
+#### 4.4 类型转换
+
+由于golang是一门静态语言，无法实现不同类型的直接转换，但是通过类型转换的方式，我们可以将不同类型的值之间进行类型的动态修改，比如下面的实例我们将int和float类型进行代码转换,再将float转换为无符号整数类型。转换的方式是直接使用类似于T(v)的方式将v转换为T类型。
+
+```go
+import (
+	"fmt"
+	"math"
+)
+
+func main() {
+	var x, y int = 3, 4
+	var f float64 = math.Sqrt(float64(x*x + y*y))
+	var z uint = uint(f)
+	fmt.Println(x, y, z)
+}
+```
+

@@ -39,23 +39,8 @@ func FooWithArgsAndReturn(s string) string {
 	return fmt.Sprintf("FooWithArgsAndReturn: %s\n", s)
 }
 
-// FooWithArgsAndMultiReturn will return multi return
-func FooWithArgsAndMultiReturn(s string) (string, error) {
-	if s == "error" {
-		return "", errors.New("FooWithArgsAndMultiReturn: Error")
-	}
-	return fmt.Sprintf("FooWithArgsAndMultiReturn: %s\n", s), nil
-}
 
-// FooWithArgsAndMultiDefaultReturn will return multi return with some default
-func FooWithArgsAndMultiDefaultReturn(s string) (message string, err error) {
-	if s == "error" {
-		err = errors.New("FooWithArgsAndMultiDefaultReturn: Error")
-		return
-	}
-	message = fmt.Sprintf("FooWithArgsAndMultiDefaultReturn: %s\n", s)
-	return
-}
+
 ```
 
 函数在使用的时候可以通过以下的方式处理
@@ -73,21 +58,11 @@ func main() {
 	fmt.Print(FooWithArgsAndReturn("Hello world"))
 	// FooWithArgsAndReturn: Hello world
 
-	_, err := FooWithArgsAndMultiReturn("error")
-	if err != nil {
-		fmt.Println(err)
-	}
-	// FooWithArgsAndMultiReturn: Error
-
-	_, err = FooWithArgsAndMultiDefaultReturn("error")
-	if err != nil {
-		fmt.Println(err)
-	}
-	// FooWithArgsAndMultiReturn: Error
 }
 ```
 
-另外函数本身也是一种类型，因此我们可以通过常规类型声明的方式来声明或者定义函数比如下面的例子：
+函数本身也是一种类型，因此我们可以通过常规类型声明的方式来声明或者定义函数,比如下面的例子中我们定义了函数f并将整个的函数体传递给f，并执行函数。
+
 
 ```go
 	f := func(name string) string {
@@ -96,6 +71,53 @@ func main() {
 	f("mike")
 ```
 
+
+
+##### 多值返回
+
+相对于C或者Python等语言，Go语言提供的多值返回功能，使得编写代码更加的灵活，比如对于Write函数写入数据到某一个对象中，单值返回一般只能返回状态或者写入多少，假如写入了一半出错，是很难直接返回的，往往需要将结果封装一层成为一个复杂对象才可以，而go原生支持多值返回，所以很多标准库的函数在执行的时候都借助了该方式：
+
+
+```go
+func (file *File) Write(b []byte) (n int, err error)
+
+// FooWithArgsAndMultiReturn will return multi return
+func FooWithArgsAndMultiReturn(s string) (string, error) {
+	if s == "error" {
+		return "", errors.New("FooWithArgsAndMultiReturn: Error")
+	}
+	return fmt.Sprintf("FooWithArgsAndMultiReturn: %s\n", s), nil
+}
+
+_, err := FooWithArgsAndMultiReturn("error")
+if err != nil {
+	fmt.Println(err)
+}
+// FooWithArgsAndMultiReturn: Error
+```
+##### 返回值命名
+
+返回值命名使得我们可以在函数定义的时候直接声明需要返回的类型的名称，这样我们可以首先免去函数体内的变量声明，同时在返回的时候不需要每次都说明需要返回的变量，只需要使用return关键词即可，示例如下：
+
+```go
+
+// FooWithArgsAndMultiDefaultReturn will return multi return with some default
+func FooWithArgsAndMultiDefaultReturn(s string) (message string, err error) {
+	if s == "error" {
+		err = errors.New("FooWithArgsAndMultiDefaultReturn: Error")
+		return
+	}
+	message = fmt.Sprintf("FooWithArgsAndMultiDefaultReturn: %s\n", s)
+	return
+}
+
+
+_, err = FooWithArgsAndMultiDefaultReturn("error")
+if err != nil {
+	fmt.Println(err)
+}
+// FooWithArgsAndMultiReturn: Error
+```
 
 
 #### 7.2 可变参数
@@ -196,100 +218,40 @@ func FuncWithMultiDefer(){
 	// 9 8 7 6 5 4 3 2 1 0
 ```
 
-#### 7.4 接口Interface
+另外一个比较复杂的例子是在defer中使用嵌套可执行参数，这样在执行程序的时候，可执行程序会首先执行，获得必要的参数后，才会将整个的defer函数和计算后的参数写入堆栈中，如下面的代码所示, b函数执行的时候，会调用defer un(trace("b"))但是由于trace("b")是一个可执行的对象，所以先获取结果，打印entering b , 同时defer函数变为 un("b") 这时候在正常调用b函数，打印in b， 执行a()函数。
 
-接口是go语言中用来定义一些具有相同行为的一种类型，比如下面的例子中我们定义了Human是一个接口对象，包含了一个speak()函数，因此我们可以认为所有具有speak函数（行为）的类型都可以称之为Human, 这也就表示一个对象可能同时符合多个接口的约束条件。
+a()函数同样包含一个un(trace("a")), 打印entering a，执行 in a, 并退出a()，退出的时候由于defer函数存在，执行un("a"), leaving: a, 退出后执行b的defer函数打印leaving: b
 
-```go
-type Human interface {
-	speak() string
-}
-```
 
-我们定义了两个对象，分别是一个结构体对象和一个自定义的类型对象， 都实现了speak方法，也就是都覅金额Human接口，
 
 ```go
-type Programmer struct {
-	name string
-	age  int
+func trace(s string) string {
+	fmt.Println("entering:", s)
+	return s
+}
+func un(s string) {
+	fmt.Println("leaving:", s)
+}
+func a() {
+	defer un(trace("a"))
+	fmt.Println("in a")
+}
+func b() {
+	defer un(trace("b"))
+	fmt.Println("in b")
+	a()
+}
+func main() {
+	b()
 }
 
-func (p Programmer) speak() string {
-	return fmt.Sprintf("i am a programmer")
-}
-
-func (p Programmer) Doing() string {
-	return "Coding..."
-}
-
-type Doctor string
-
-func (b Doctor) speak() string {
-	return "i am a doctor"
-}
+// entering: b
+// in b
+// entering: a
+// in a
+// leaving: a
+// leaving: b
 ```
-
-这样我们可以对于不同的类型利用接口的方式进行统一处理，比如设置传递参数为接口，任何符合接口规范的都可以传递到函数中进行处理, 代码如下， 同时利用类型断言和类型转换，我们可以很方便的进行细粒度的类型划分和处理。
-
-```go
-func Say(h Human) {
-	switch h.(type) {
-	case Programmer:
-		fmt.Printf("Programmer say: %s and i am %s \n", h.speak(), h.(Programmer).Doing())
-	case Doctor:
-		fmt.Printf("Doctor say: %s\n", h.speak())
-	default:
-		fmt.Printf("Some one say: %s\n", h.speak())
-	}
-}
-```
-
-有时候我们需要实现一些标准库或者第三方库中的接口来满足函数调用的需求，比如为了实现数据的排序操作，标准库sort类中的排序函数Sort可以满足需求，其函数定义如下：
-
-```
-func Sort(data Interface)
-    Sort sorts data. It makes one call to data.Len to determine n, and
-    O(n*log(n)) calls to data.Less and data.Swap. The sort is not guaranteed to
-    be stable.
-
-```
-
-该函数可以接收一个interface类型，但是整个接口需要我们满足Less，Swap和Len三个函数行为才能使用，因此为了实现自定义结构的排序操作，我们首先需要满足上述的接口，然后才可以调用sort实现排序操作。
-
-```go
-type Sequence []int
-
-// Methods required by sort.Interface.
-func (s Sequence) Len() int {
-    return len(s)
-}
-func (s Sequence) Less(i, j int) bool {
-    return s[i] < s[j]
-}
-func (s Sequence) Swap(i, j int) {
-    s[i], s[j] = s[j], s[i]
-}
-
-// Method for printing - sorts the elements before printing.
-func (s Sequence) String() string {
-    sort.Sort(s)
-    str := "["
-    for i, elem := range s {
-        if i > 0 {
-            str += " "
-        }
-        str += fmt.Sprint(elem)
-    }
-    return str + "]"
-}
-```
-
-> 任何类型都满足interface{}， 因此才使得fmt.Println()这样的函数可以接收任何的类型输入
->
-> 函数的定义**func Println(a ...interface{}) (n int, err error)**， 借助于... 可以接收任意数量的参数输入。
-
-参考：https://www.ardanlabs.com/blog/2015/09/composition-with-go.html
-
 
 
 #### 7.5 匿名函数
