@@ -70,7 +70,154 @@ $ go test ./utils
 ok      github.com/zhangmingkai4315/golang-essentials/14-测试/01-test-example/util
 ```
 
+#### 14.3 表格测试
 
+上面的测试中，我们在测试函数中仅仅写了一个测试例子是，这往往是不够的，有时候我们需要对于任何可能出错的情况的例子都要进行测试，涉及很多个类型的测试，因此我们可以考虑将所有的测试例子放在一起，编写代码，使得代码更紧凑，代码量更少，如下所示就是利用表格测试的方式来管理测试示例：
+```go
+func TestSum(t *testing.T) {
+	type testdata struct {
+		input  []int
+		expect int
+	}
+	tests := []testdata{
+		testdata{
+			input:  []int{1, 2, 3, 4, 5, 6},
+			expect: 21,
+		},
+		testdata{
+			input:  []int{},
+			expect: 0,
+		},
+		testdata{
+			input:  []int{-1, -2, 2, 1},
+			expect: 0,
+		},
+		testdata{
+			input:  []int{1},
+			expect: 1,
+		},
+	}
+	for _, data := range tests {
+		result := Sum(data.input...)
+		if result != data.expect {
+			t.Errorf("Expect %d ,but got %d", data.expect, result)
+		}
+	}
+}
+```
+当我们执行go test的时候，将通过loop循环来执行所有的测试示例。
 
+#### 14.4 编写示例测试
 
+Example示例测试是go语言中测试的一种特殊形式，如果我们执行go test，所有的测试包括示例测试也会被同时执行，同时示例测试也被用于生成程序包的文档。以下是示例测试
 
+```go 
+// sum.go
+
+// Sum will receive unlimit number of int
+// and return sum of all numbers
+func Sum(arr ...int) (result int) {
+	for _, i := range arr {
+		result += i
+	}
+	return
+}
+
+// sum_test.go
+
+func ExampleSum() {
+	fmt.Println(Sum(1, 2, 3, 4, 5))
+	// Output:
+	// 15
+}
+
+```
+
+当我们对于该包执行测试的时候，测试程序会执行通过，加入我们修改Output中的值为16，则重新执行测试的时候会报错，说明go程序在检查测试的时候依赖于注释中的Output信息。
+
+```sh
+--- FAIL: ExampleSum (0.00s)
+got:
+15
+want:
+16
+FAIL
+FAIL    github.com/zhangmingkai4315/golang-essentials/14-测试/03-example        1.693s
+```
+
+同时为了建立示例程序与原始程序的关联，go语言有以下的规则：
+```go
+func Example() { ... } 提供包相关示例
+func ExampleF() { ... } 提供函数相关示例
+func ExampleT() { ... } 提供类型相关示例
+func ExampleT_M() { ... }  提供类型函数相关示例
+```
+如果需要建立多个示例的话可以在上述规则的后面追加一些以小写字母开头的字符，比如
+
+```go
+func ExampleF_first() { ... }
+func ExampleF_second() { ... }
+func ExampleF_third() { ... }
+```
+#### 14.5 语法检查
+
+针对go语言代码，有一些比较常见的go语言规范化工具，比如gofmt,go vet,golint,其中gofmt用于格式化go源代码，golint可以提供语法错误检查，并给出一些建议，go vet检查代码并报告有问题的代码结构，比如Printf调用函数中不包含任何format字符串，尽管这不会导致程序出错，但是仍旧是存在问题的一种使用方式。
+
+安装golint的方式如下：
+```
+$ go get -u golang.org/x/lint/golint
+$ golint -h
+Usage of golint:
+        golint [flags] # runs on package in current directory
+        golint [flags] [packages]
+        golint [flags] [directories] # where a '/...' suffix includes all sub-directories
+        golint [flags] [files] # all must belong to a single package
+```
+如果我们对于03-example包执行golint则会提示如下的信息：
+```
+$ golint ./03-example/
+03-example\sum.go:1:1: package comment should be of the form "Package example ..."
+
+```
+这是由于我们在写Package example时候的注释信息不太规范，应该尽量遵守golint提示的相关警告信息，使得代码尽量保持最佳规范实践。
+
+gofmt是一个随go程序一起安装的二进制程序，用于格式化代码，比如使用tab来完成缩进，加入一些空格使得程序更加整洁等等如果使用vscode安装go语言插件，当我们保存的时候一般会自动的执行gofmt来格式化程序代码。
+
+#### 14.6 压力测试
+
+压力测试是测试功能中的一种，用于测试某一些函数或者操作执行的情况，通过同时运行大量的重复测试来计算出平均函数或者操作执行的时间，下面我们将写一个简单的封装函数来输出字符串的md5值，函数如下，主要是封装了crypto/md5库的函数来完成操作。
+
+```go
+import (
+	"crypto/md5"
+	"fmt"
+)
+
+func GetStringMd5(input string) string {
+	return fmt.Sprintf("%x", md5.Sum([]byte(input)))
+}
+
+```
+
+针对压力测试的方式和普通的测试不太一样，压力测试的函数以Benchmark开头，同时传递的参数必须是**testing.B**的对象，压力函数执行过程中需要使用一个循环体结构，循环的次数由系统决定：
+
+```go
+func BenchmarkGetStringMd5(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		GetStringMd5("hello world")
+	}
+}
+
+```
+
+函数编写完成后执行测试的方式也和上面的不同，如果需要执行压力测试，需要指定测试的参数**-bench**,执行过程如下：
+
+```sh
+go test ./04-benchmarking/ -bench GetStringMd5
+goos: windows
+goarch: amd64
+pkg: github.com/zhangmingkai4315/golang-essentials/14-测试/04-benchmarking
+BenchmarkGetStringMd5-12         2000000               618 ns/op
+PASS
+ok      github.com/zhangmingkai4315/golang-essentials/14-测试/04-benchmarking   6.449s
+```
