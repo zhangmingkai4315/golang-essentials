@@ -300,7 +300,7 @@ func main() {
 
 上述的管理器分别用来执行取消，超时，传递数据等操作，具体的例子可以参考对应的官方手册，此处不再一一列出。
 
-#### 12.6 附录
+##### 相关附录
 
 - [Go语言经典语句](https://go-proverbs.github.io/)
 - [Golang Pipelines](https://blog.golang.org/pipelines)
