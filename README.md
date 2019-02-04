@@ -1,24 +1,23 @@
-# golang-essentials
+# Golang语言编程指南
 
-Go语言起源于Google，2007年的时候Google当时在自己的生产环境中主要使用的语言以是C++, Java和Python为主，但是发现随着软硬件系统的不断升级，部署规模的增加，这些语言都或多或少的存在一些问题，比如构建时间过长，依赖管理复杂，并发处理不够灵活，服务更新和升级繁琐等。因此为了解决这些问题，Google内部的技术人员开始尝试去开发一个新的编程语言去逐步解决这些问题，这就是Go语言的最初的设计初衷。
+![](https://github.com/zhangmingkai4315/golang-essentials/tree/master/public/golang.png)
 
-
-简单的来介绍Go语言的话就是： Go语言是一个编译型，并发，自动垃圾回收的静态语言，尽管由Google最初开发，但是已开源并获的大规模的使用。
-
-在过去十年间，Go语言获得了越来越多的人的关注。据StackOverflow的[2018年技术调查报告](https://insights.stackoverflow.com/survey/2018/)显示，2018年Go语言与Python和JavaScript编程语言一起成为众多技术人员最想学习的编程语言。作为一名DevOps工程师，当前线上部署的大规模运维支撑系统越来越多的被Go语言编写的项目所占据，比如Docker, Kubernetes, Prometheus, Grafana，CoreDNS等等，这些项目已经深入到我们的日常工作之中。
-
+2007年, 当时Google在自己的生产环境中主要使用的语言以C++, Java和Python为主，但是发现随着系统规模越来越大，软硬件的不断升级，这些传统的编程语言本身的设计和使用或多或少的对于运行环境产生了一些负面的影响，比如编译构建时间过长，包依赖管理复杂，并发处理不够灵活，服务更新和升级繁琐等问题。因此Google的技术人员计划从语言层面去尝试解决这些问题，通过开发一种新的编程语言来彻底的解决这些问题，这就导致了最终Go语言的诞生。
 
 Go语言的开发团队成员也都是一些知名的计算机行业专家其中包括：Rob Pike ，曾参与Unix 以及UTF-8的开发，Robert Griesemer 早期Pascal语言的开发人员，Ken Thompson曾参与Unix，B语言及C语言设计工作。这些技术专家的加入以及Google公司的背景，使得对于Go语言自诞生之初，就获得了众多的关注，经过十几年的发展，Go语言也其稳定可靠，干净效率的编程发生赢多了很多工程师的喜爱。
+
+![](https://github.com/zhangmingkai4315/golang-essentials/tree/master/public/stackoverflow-golang-wanted.png)
+在过去十年间，Go语言获得了越来越多的人的关注。据StackOverflow的[2018年技术调查报告](https://insights.stackoverflow.com/survey/2018/)显示，2018年Go语言与Python和JavaScript编程语言一起成为众多技术人员最想学习的编程语言。作为一名DevOps工程师，当前线上部署的大规模运维支撑系统越来越多的被Go语言编写的项目所占据，比如Docker, Kubernetes, Prometheus, Grafana，CoreDNS等等，这些项目已经深入到我们的日常的运维开发工作之中。
+
 
 >  I think Node is not the best system to build a massive server web. I would use Go for that. And honestly, that’s the reason why I left Node. It was the realization that: oh, actually, this is not the best server-side system ever.                
                                     **- Ryan Dahl（NodeJS作者）**
 
+如果使用一句话来简单的介绍Go语言那就是: **Go语言是一个编译型，并发，自动垃圾回收的静态语言, 由Google最初开发，但已开源并获的大规模的使用**。使用Go语言可以进行系统及网络方面的程序设计开发，比如开发分布式系统，命令行程序，web后台系统，以及一些图像处理，加密算法等需求。
 
-使用Go语言可以进行系统及网络方面的程序设计开发，比如开发分布式系统，命令行程序，web后台系统，以及一些图像处理，加密算法等需求。
+本书通过一步步的介绍Go语言的语法规范，语言特性来带领大家熟悉和理解Go语言，并能够运用到日常的工作之中，同时后期也会不断的维护和更新，保证代码和内容与当前最新版本一致。
 
-
-
-## 主要内容
+## 目录
 
 ### [1.开发环境准备](https://github.com/zhangmingkai4315/golang-essentials/tree/master/01-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
 - [1.1 Windows环境安装](https://github.com/zhangmingkai4315/golang-essentials/tree/master/01-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85#11-windows%E7%8E%AF%E5%A2%83)
