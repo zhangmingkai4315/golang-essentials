@@ -1,12 +1,12 @@
 # Golang语言编程指南
 
-![](https://github.com/zhangmingkai4315/golang-essentials/tree/master/public/golang.png)
+![](https://github.com/zhangmingkai4315/golang-essentials/blob/master/public/golang.png?raw=true)
 
 2007年, 当时Google在自己的生产环境中主要使用的语言以C++, Java和Python为主，但是发现随着系统规模越来越大，软硬件的不断升级，这些传统的编程语言本身的设计和使用或多或少的对于运行环境产生了一些负面的影响，比如编译构建时间过长，包依赖管理复杂，并发处理不够灵活，服务更新和升级繁琐等问题。因此Google的技术人员计划从语言层面去尝试解决这些问题，通过开发一种新的编程语言来彻底的解决这些问题，这就导致了最终Go语言的诞生。
 
 Go语言的开发团队成员也都是一些知名的计算机行业专家其中包括：Rob Pike ，曾参与Unix 以及UTF-8的开发，Robert Griesemer 早期Pascal语言的开发人员，Ken Thompson曾参与Unix，B语言及C语言设计工作。这些技术专家的加入以及Google公司的背景，使得对于Go语言自诞生之初，就获得了众多的关注，经过十几年的发展，Go语言也其稳定可靠，干净效率的编程发生赢多了很多工程师的喜爱。
 
-![](https://github.com/zhangmingkai4315/golang-essentials/tree/master/public/stackoverflow-golang-wanted.png)
+![](https://github.com/zhangmingkai4315/golang-essentials/blob/master/public/stackoverflow-golang-wanted.PNG?raw=true)
 在过去十年间，Go语言获得了越来越多的人的关注。据StackOverflow的[2018年技术调查报告](https://insights.stackoverflow.com/survey/2018/)显示，2018年Go语言与Python和JavaScript编程语言一起成为众多技术人员最想学习的编程语言。作为一名DevOps工程师，当前线上部署的大规模运维支撑系统越来越多的被Go语言编写的项目所占据，比如Docker, Kubernetes, Prometheus, Grafana，CoreDNS等等，这些项目已经深入到我们的日常的运维开发工作之中。
 
 
@@ -48,8 +48,6 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [6.1. Array数组类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/06-%E6%95%B0%E7%BB%84%E5%88%87%E7%89%87%E5%92%8CMap%E7%B1%BB%E5%9E%8B#61-array%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B)
 - [6.2 slice切片类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/06-%E6%95%B0%E7%BB%84%E5%88%87%E7%89%87%E5%92%8CMap%E7%B1%BB%E5%9E%8B#62-slice%E5%88%87%E7%89%87%E7%B1%BB%E5%9E%8B)
 - [6.3 map类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/06-%E6%95%B0%E7%BB%84%E5%88%87%E7%89%87%E5%92%8CMap%E7%B1%BB%E5%9E%8B#63-map%E7%B1%BB%E5%9E%8B)
-- []()
-- []()
 ### [7.结构体](https://github.com/zhangmingkai4315/golang-essentials/tree/master/07-%E7%BB%93%E6%9E%84%E4%BD%93)
 - [7.1 嵌套结构体](https://github.com/zhangmingkai4315/golang-essentials/tree/master/07-%E7%BB%93%E6%9E%84%E4%BD%93#71-%E5%B5%8C%E5%A5%97%E7%BB%93%E6%9E%84%E4%BD%93)
 - [7.2 匿名结构体](https://github.com/zhangmingkai4315/golang-essentials/tree/master/07-%E7%BB%93%E6%9E%84%E4%BD%93#72-%E5%8C%BF%E5%90%8D%E7%BB%93%E6%9E%84%E4%BD%93)
@@ -74,7 +72,7 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [10.4 使用Go语言编写密码加密和验证](https://github.com/zhangmingkai4315/golang-essentials/tree/master/10-%E7%BC%96%E5%86%99%E5%BA%94%E7%94%A8#104-%E4%BD%BF%E7%94%A8go%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E5%92%8C%E9%AA%8C%E8%AF%81)
 ### [11.并发编程](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B)
 
-- [11.1 并发不是并行](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B#111-concurrency-is-not-parallelism)
+- [11.1 并发不是并行](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B#111-%E5%B9%B6%E5%8F%91%E4%B8%8D%E6%98%AF%E5%B9%B6%E8%A1%8C)
 - [11.2 goroutine](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B#112-goroutine)
 - [11.3 WaitGroup](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B#113-waitgroup)
 - [11.4 并发环境下的共享变量](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B#114-%E5%B9%B6%E5%8F%91%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F)
