@@ -27,7 +27,7 @@ func main() {
 尝试执行go run 或者go build或者go fmt并检查输出内容。
 
 
-#### 2.2 使用golang标准包
+#### 2.2 使用标准包
 
 https://golang.org/pkg/ 包含所有已经内置的标准包内容，除了标准包以外还有一些第三方的包提供下载使用。可以直接在线查询某一些包的使用方法：比如https://godoc.org/fmt
 或者使用内置的命令检查整个的标准包或者某一些函数的介绍
@@ -76,7 +76,7 @@ func main(){
 **如果每一行中最后的字符是一个标识符比如int, float,或者一个数字以及string类型再或者是break, continue, fallthrough return ++ -- ) } 这些符号，则追加一个分号来结束此行。**。根据此规则，如果我们main()后面没有任何的字符，则直接添加;结束了代码，编译肯定失效了。
 
  
- #### 2.4 Go语言中的变量定义
+ #### 2.4 变量定义
  
  之前的函数使用中我们定义了n和n1分别代表我们自己的变量名称，但是go语言中对于变量名以及类型名声明是有要求的比如如下的格式：
  
@@ -133,7 +133,7 @@ func main() {
 https://golang.org/ref/spec#The_zero_value
 
 
-#### 2.5 类型
+#### 2.5 语言类型
 
 
 golang包含的[基础类型](https://golang.org/ref/spec#Types)包含：
