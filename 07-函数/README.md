@@ -40,7 +40,6 @@ func FooWithArgsAndReturn(s string) string {
 }
 
 
-
 ```
 
 函数在使用的时候可以通过以下的方式处理
