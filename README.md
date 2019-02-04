@@ -105,10 +105,10 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [15.3 表格测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#153-%E8%A1%A8%E6%A0%BC%E6%B5%8B%E8%AF%95)
 - [15.4 编写示例测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#154-%E7%BC%96%E5%86%99%E7%A4%BA%E4%BE%8B%E6%B5%8B%E8%AF%95)
 
--[15.5 语法检查](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#155-%E8%AF%AD%E6%B3%95%E6%A3%80%E6%9F%A5)
+- [15.5 语法检查](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#155-%E8%AF%AD%E6%B3%95%E6%A3%80%E6%9F%A5)
 
--[15.6 压力测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#156-%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95)
--[15.7 覆盖测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#157-%E8%A6%86%E7%9B%96%E6%B5%8B%E8%AF%95)
+- [15.6 压力测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#156-%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95)
+- [15.7 覆盖测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#157-%E8%A6%86%E7%9B%96%E6%B5%8B%E8%AF%95)
 
 ## 其他参考资料
 
