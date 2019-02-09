@@ -11,10 +11,12 @@ type user struct {
 
 func main() {
 	i := 1
+	// 同 while
 	for i < 3 {
 		fmt.Printf("i=%d \n", i)
 		i = i + 1
 	}
+	// 进入无限循环，直到内部代码使用break主动退出
 	for {
 		fmt.Println("loop")
 		break
@@ -36,17 +38,19 @@ func main() {
 		{"Mike", "mike@example.com"},
 		{"Alice", "alice@example.com"},
 	}
-
+	// 如果仅仅使用第二个对象（对于数组或者slice的话每次获得一对[index, value]）
 	for _, user := range users {
 		fmt.Printf("name = %s ; email = %s \n", user.name, user.email)
 	}
 	// name = Mike ; email = mike@example.com
 	// name = Alice ; email = alice@example.com
 
+	//
 	persons := map[int]user{
 		1: user{name: "mike", email: "mike@example.com"},
 		2: user{name: "alice", email: "alice@example.com"},
 	}
+
 	for k, v := range persons {
 		fmt.Printf("No%d :name = %s ; email = %s \n", k, v.name, v.email)
 	}
