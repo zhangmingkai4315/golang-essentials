@@ -386,6 +386,37 @@ func main() {
 ```
 
 
+#### 8.9 init函数
 
+init函数是Go语言的一种特殊的函数，该函数可以存在任何的源文件中，如果在主main函数文件中，则会在全局变量声明完成后直接执行，而不需要等main函数执行，并且该函数允许多个init函数同时存在。使用init函数可以用来进行主程序参数的管理，初始化操作（一些数据库的初始化经常使用）等。
 
+```golang
+var (
+	a = 1
+	b = 2
+)
+
+func init() {
+	fmt.Println("Start init1 function")
+	fmt.Println(a, b)
+	a++
+}
+func init() {
+	fmt.Println("Start init2 function")
+	fmt.Println(a, b)
+	a++
+}
+func main() {
+	fmt.Println("Start main function ")
+	fmt.Println(a, b)
+}
+
+// Start init1 function
+// 1 2
+// Start init2 function
+// 2 2
+// Start main function
+// 3 2
+
+```
 

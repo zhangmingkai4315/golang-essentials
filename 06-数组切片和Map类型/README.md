@@ -6,7 +6,7 @@ golang中使用数组的机会比较少，一般都会使用后面介绍的Slice
 
 - 分配一个数组给另外一个将会拷贝所有的内容
 - 传递数组给函数将会重新进行数组的复制
-- 数组的大小也是类型的一部分，所以在传递参数的时候，要确保数组大小也一致。
+- 数组的大小也是类型的一部分，所以在传递参数的时候，要确保数组大小也一致，因此[10]int和[20]int不是一个类型。
 
 ```go
 func showArray(arr [5]int) {
@@ -65,27 +65,26 @@ slice类型是在编写go程序中经常被运用到的类型，可以看作是�
 
 默认的容量扩展将按照两倍的方式进行处理，原来的复制到新的容器中。
 
-```
+```go
 	z := make([]int, 10, 11)
 	fmt.Printf("len of z is %d ,cap of z is %d\n", len(z), cap(z))
 	// len of z is 10 ,cap of z is 11
 	z = append(z, x...)
 	fmt.Printf("len of z is %d ,cap of z is %d\n", len(z), cap(z))
 	// len of z is 16 ,cap of z is 22
-
 ```
 
 
 
 同时不管是数组还是Slice我们都可以使用多维的方式存储数据比如下面的代码，操作二维Slice如同一个excel表格一样。
 
-```
-	persons := []string{"mike", "alice", "bob"}
-	city := []string{"beijing", "sanjun", "tokyo"}
-	info := [][]string{persons, city}
+```golang
+persons := []string{"mike", "alice", "bob"}
+city := []string{"beijing", "sanjun", "tokyo"}
+info := [][]string{persons, city}
 
-	fmt.Println(info)
-	// [[mike alice bob] [beijing sanjun tokyo]]
+fmt.Println(info)
+// [[mike alice bob] [beijing sanjun tokyo]]
 
 ```
 
@@ -128,7 +127,42 @@ map类型是go语言中内建的一种数据结构，内部使用键值的方式
 	fmt.Println(len(person)) // 2
 ```
 
-### 6.4 练习
+#### 6.4 Append的实现
 
-暂无
+在slice中如果我们需要连接两个slice数据结构，我们可以借助于内部已经实现的append函数来完成操作，或者我们可以尝试自己取实现一个简单的针对int切片类型的Append函数，如下面的代码所示, 实现代码需要注意的地方在于，如果我们尝试直接copy数据到旧的切片中，可能导致容量不够，因此我们需要首先进行判断，是否容量超出，如果超出的话则尝试对其进行扩容，当然扩容的过程涉及到原有数据的复制操作。至于为什么多分配一倍的新切片对象空间，是为了将来进一步执行Append的时候不需要每次都重复进行数据复制的操作/
+
+```golang
+
+// Append will append the newSlice to the old slice and
+// return the whole slice
+func Append(oldSlice []int, newSlice []int) []int {
+	if len(newSlice) == 0 {
+		return oldSlice
+	}
+	length := len(oldSlice)
+	if length+len(newSlice) > cap(oldSlice) {
+		temSlice := make([]int, (length + cap(newSlice)*2))
+		copy(temSlice, oldSlice)
+		oldSlice = temSlice
+	}
+	oldSlice = oldSlice[0 : length+len(newSlice)]
+	copy(oldSlice[length:], newSlice)
+	return oldSlice
+}
+```
+
+使用该函数如下面所示：
+```go
+oldSlice := []int{1, 2, 3, 4}
+fmt.Printf("len(oldslice)=%d, cap(oldslice)=%d\n", len(oldSlice), cap(oldSlice))
+//len(oldslice)=4, cap(oldslice)=4
+
+newSlice := []int{5, 6, 7, 8, 9, 10}
+oldSlice = Append(oldSlice, newSlice)
+fmt.Println(oldSlice)
+//[1 2 3 4 5 6 7 8 9 10]
+
+fmt.Printf("len(oldslice)=%d, cap(oldslice)=%d\n", len(oldSlice), cap(oldSlice))
+// len(oldslice)=10, cap(oldslice)=16
+```
 

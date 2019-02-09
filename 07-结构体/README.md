@@ -77,6 +77,67 @@ fmt.Printf("m1： ip = %s , date = %s\n", m1.IP, m1.Date)
 	fmt.Printf("%+v", m1)
 ```
 
+#### 7.3 使用new关键词
+使用new关键词可以用来创建一个结构体，但是返回的是对应的结构体指针，所有的内部类型将按照类型进行零值处理，比如对于整形则返回0，对于string类型则返回空字符串等等。
+
+```golang
+
+func main() {
+	type person struct {
+		name   string
+		age    int
+		isMale bool
+		phones []string
+	}
+
+	p := new(person)
+	fmt.Printf("the type of p = %T\n", p)
+	// the type of p = *main.person
+	fmt.Printf("the value of p = %+v", p)
+	// the value of p = &{name: age:0 isMale:false phones:[]}
+	p.phones = append(p.phones, "12345678")
+	fmt.Printf("the value of p = %+v", p)
+	// the value of p = &{name: age:0 isMale:false phones:[12345678]}
+}
+```
+使用这种方式可以用来进行结构体的初始化，然后对于结构体再进行自定义的修改，这在编写代码的时候是一种很常见的编写方式，比如下面的例子, 使用new来创建一个File结构体指针，再将一些内容传递到结构体中实现对于结构体的修改。
+
+```go
+func NewFile(fd int, name string) *File {
+    if fd < 0 {
+        return nil
+    }
+    f := new(File)
+    f.fd = fd
+    f.name = name
+    f.dirinfo = nil
+    f.nepipe = 0
+    return f
+}
+```
+除了使用上面的new方式创建，我们可以直接使用结构体本身的初始化方式创建一个对象并返回：
+```go
+func NewFile(fd int, name string) *File {
+    if fd < 0 {
+        return nil
+    }
+    f := File{fd, name, nil, 0}
+    return &f
+}
+```
+
+在6.2中我们介绍了使用make来创建slice类型，其实除了slice和数组类型以外，make还可以初始化map类型和channel类型，返回一个初始化的类型值，而不是其类型指针。使用make和new的区别在与是否进行初始化还是执行取零操作,如下面的操作所示:
+
+```go
+var p *[]int = new([]int)      
+var v  []int = make([]int, 100) 
+
+```
+第一个初始化过程中，使用new来创建一个int的切片类型，这时候仅仅返回一个指针，该指针此时满足``` *p == nil ``` 后续如果使用还需要进行初始化操作，因此很少使用这种方式，第二种方式则比较常见，使用make初始化操作并创建一个占用100个int空间的数据结构，返回对应的引用，而不是其指针。
+
+> 使用make仅仅可以用在切片，数组和map类型以及channel类型上，返回的是类型而不是类型指针，如果需要指针的话使用取地址操作符即可。
+
+
 #### 附录
 
 ##### 1. Go语言是否是面向对象的语言

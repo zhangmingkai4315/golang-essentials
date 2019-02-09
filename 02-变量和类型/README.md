@@ -37,13 +37,6 @@ go doc fmt
 go doc fmt.Println
 ```
 
-如果无法翻墙使用godoc也可以直接使用下面的命令启动一个本地的web服务
-```
- godoc -http=:8080
-```
-godoc.org网站包含除了标准库之外的第三方库
-
-
 使用import将导入包到运行环境，使用包名称加函数名的方式调用包中的函数比如```fmt.Println()```
 
 #### 2.3 参数和类型
@@ -132,6 +125,14 @@ func main() {
 其他的类型比如指针，函数以及切片,map和channel的缺省都为nil
 https://golang.org/ref/spec#The_zero_value
 
+同时使用变量初始化的时候，支持按组初始化，比如下面的方式：
+```go
+var (
+    home = os.Getenv("HOME")
+    user = os.Getenv("USER")
+    gopath = os.Getenv("GOPATH")
+)
+```
 
 #### 2.5 语言类型
 
