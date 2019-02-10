@@ -31,6 +31,12 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [2.4 变量定义](https://github.com/zhangmingkai4315/golang-essentials/tree/master/02-%E5%8F%98%E9%87%8F%E5%92%8C%E7%B1%BB%E5%9E%8B#24-go%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E5%AE%9A%E4%B9%89)
 - [2.5 语言类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/02-%E5%8F%98%E9%87%8F%E5%92%8C%E7%B1%BB%E5%9E%8B#25-%E7%B1%BB%E5%9E%8B)
 ### [3.控制流](https://github.com/zhangmingkai4315/golang-essentials/tree/master/03-%E6%8E%A7%E5%88%B6%E6%B5%81)
+
+- [3.1 for循环语句](https://github.com/zhangmingkai4315/golang-essentials/tree/master/03-%E6%8E%A7%E5%88%B6%E6%B5%81#31-for%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5)
+- [3.2 break和continue](https://github.com/zhangmingkai4315/golang-essentials/tree/master/03-%E6%8E%A7%E5%88%B6%E6%B5%81#32-break%E5%92%8Ccontinue)
+- [3.3 if判断语句](https://github.com/zhangmingkai4315/golang-essentials/tree/master/03-%E6%8E%A7%E5%88%B6%E6%B5%81#32-break%E5%92%8Ccontinue)
+- [3.4 Switch选择语句](https://github.com/zhangmingkai4315/golang-essentials/tree/master/03-%E6%8E%A7%E5%88%B6%E6%B5%81#34-switch%E9%80%89%E6%8B%A9%E8%AF%AD%E5%8F%A5)
+
 ### [4.基本类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/04-%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B)
 
 - [4.1 number数值类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/04-%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B#41-number%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B)
@@ -43,6 +49,7 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [5.1 接口Interface](https://github.com/zhangmingkai4315/golang-essentials/tree/master/05-interface%E7%B1%BB%E5%9E%8B#51-%E6%8E%A5%E5%8F%A3interface)
 - [5.2 类型断言](https://github.com/zhangmingkai4315/golang-essentials/tree/master/05-interface%E7%B1%BB%E5%9E%8B#52-%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80)
 - [5.3 实现sort接口](https://github.com/zhangmingkai4315/golang-essentials/tree/master/05-interface%E7%B1%BB%E5%9E%8B#53-%E5%AE%9E%E7%8E%B0sort%E6%8E%A5%E5%8F%A3)
+- [5.4 HTTP接口]()
 
 ### [6.数组切片和Map类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/06-%E6%95%B0%E7%BB%84%E5%88%87%E7%89%87%E5%92%8CMap%E7%B1%BB%E5%9E%8B)
 - [6.1. Array数组类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/06-%E6%95%B0%E7%BB%84%E5%88%87%E7%89%87%E5%92%8CMap%E7%B1%BB%E5%9E%8B#61-array%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B)
@@ -51,6 +58,8 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 ### [7.结构体](https://github.com/zhangmingkai4315/golang-essentials/tree/master/07-%E7%BB%93%E6%9E%84%E4%BD%93)
 - [7.1 嵌套结构体](https://github.com/zhangmingkai4315/golang-essentials/tree/master/07-%E7%BB%93%E6%9E%84%E4%BD%93#71-%E5%B5%8C%E5%A5%97%E7%BB%93%E6%9E%84%E4%BD%93)
 - [7.2 匿名结构体](https://github.com/zhangmingkai4315/golang-essentials/tree/master/07-%E7%BB%93%E6%9E%84%E4%BD%93#72-%E5%8C%BF%E5%90%8D%E7%BB%93%E6%9E%84%E4%BD%93)
+- [7.3 使用new关键词](https://github.com/zhangmingkai4315/golang-essentials/tree/master/07-%E7%BB%93%E6%9E%84%E4%BD%93#73-%E4%BD%BF%E7%94%A8new%E5%85%B3%E9%94%AE%E8%AF%8D)
+
 ### [8.函数](https://github.com/zhangmingkai4315/golang-essentials/tree/master/08-%E5%87%BD%E6%95%B0)
 - [8.1 函数的创建](https://github.com/zhangmingkai4315/golang-essentials/tree/master/08-%E5%87%BD%E6%95%B0#81-%E5%87%BD%E6%95%B0%E7%9A%84%E5%88%9B%E5%BB%BA)
 - [8.2 可变参数](https://github.com/zhangmingkai4315/golang-essentials/tree/master/08-%E5%87%BD%E6%95%B0#82-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0)
@@ -60,7 +69,7 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [8.6 回调函数](https://github.com/zhangmingkai4315/golang-essentials/tree/master/08-%E5%87%BD%E6%95%B0#86-%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0)
 - [8.7 闭包](https://github.com/zhangmingkai4315/golang-essentials/tree/master/08-%E5%87%BD%E6%95%B0#82-%E9%97%AD%E5%8C%85)
 - [8.8 递归函数](https://github.com/zhangmingkai4315/golang-essentials/tree/master/08-%E5%87%BD%E6%95%B0#88-%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0)
-
+- [8.9 init函数](https://github.com/zhangmingkai4315/golang-essentials/tree/master/08-%E5%87%BD%E6%95%B0#89-init%E5%87%BD%E6%95%B0)
 ### [9.指针](https://github.com/zhangmingkai4315/golang-essentials/tree/master/09-%E6%8C%87%E9%92%88)
 - [9.1 地址和指针](https://github.com/zhangmingkai4315/golang-essentials/tree/master/09-%E6%8C%87%E9%92%88#91--%E5%9C%B0%E5%9D%80%E5%92%8C%E6%8C%87%E9%92%88)
 - [9.2. 指针类型的使用](https://github.com/zhangmingkai4315/golang-essentials/tree/master/09-%E6%8C%87%E9%92%88#92-%E6%8C%87%E9%92%88%E7%B1%BB%E5%9E%8B%E7%9A%84%E4%BD%BF%E7%94%A8)
@@ -85,6 +94,8 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [12.3 select语句](https://github.com/zhangmingkai4315/golang-essentials/tree/master/12-Channel#123-select%E8%AF%AD%E5%8F%A5)
 - [12.4 Fan in和Fan out模型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/12-Channel#124-fan-in%E5%92%8Cfan-out%E6%A8%A1%E5%9E%8B)
 - [12.5 context上下文管理](https://github.com/zhangmingkai4315/golang-essentials/tree/master/12-Channel#125-context%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86)
+- [12.6 限速器的使用]()
+
 ### [13.错误处理](https://github.com/zhangmingkai4315/golang-essentials/tree/master/13-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86)
 - [13.1 error类型](https://github.com/zhangmingkai4315/golang-essentials/tree/master/13-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86#131-error%E7%B1%BB%E5%9E%8B)
 - [13.2 错误检查](https://github.com/zhangmingkai4315/golang-essentials/tree/master/13-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86#132-%E9%94%99%E8%AF%AF%E6%A3%80%E6%9F%A5)
@@ -101,9 +112,7 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [15.2 编写测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#152-%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95)
 - [15.3 表格测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#153-%E8%A1%A8%E6%A0%BC%E6%B5%8B%E8%AF%95)
 - [15.4 编写示例测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#154-%E7%BC%96%E5%86%99%E7%A4%BA%E4%BE%8B%E6%B5%8B%E8%AF%95)
-
 - [15.5 语法检查](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#155-%E8%AF%AD%E6%B3%95%E6%A3%80%E6%9F%A5)
-
 - [15.6 压力测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#156-%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95)
 - [15.7 覆盖测试](https://github.com/zhangmingkai4315/golang-essentials/tree/master/15-%E6%B5%8B%E8%AF%95#157-%E8%A6%86%E7%9B%96%E6%B5%8B%E8%AF%95)
 

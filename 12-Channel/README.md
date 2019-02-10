@@ -1,5 +1,7 @@
 ### 12. Channel
 
+在Go语言的并发编程中我们经常听到的一句话是：**不要依赖于共享内存对象来进行通信，而是使用通信的方式来共享内存**， 这句话中提到的通信的方式即指的是利用Channel的方式完成并发编程下的数据通信，任何时间仅仅有一个Goroutine来访问数据保证数据的一致性。当然了这种方式也并非最佳的使用方式，比如仅仅实现一个多个Goroutine同时访问的计数器，我们可以使用之前介绍的mutex来实现，而不是单独创建一个channel来完成，当然channel的方式也可以完成，但是会略显小题大做。
+
 #### 12.1 channel基础
 
 创建一个channel的最简单的方式是通过关键词make来实现，对于用来传递具体的类型的channel,在使用make创建channel的时候需要同时指定，另外channel包含两种类型：
@@ -299,6 +301,56 @@ func main() {
 - [WithValue](https://golang.org/pkg/context/#example_WithValue)
 
 上述的管理器分别用来执行取消，超时，传递数据等操作，具体的例子可以参考对应的官方手册，此处不再一一列出。
+
+#### 12.6 限速器的使用
+
+限速器是一个很典型的并发编程使用方式，用来限制资源的利用率，维护服务的稳定性，想象一下假如没有限速器，我们的一个web接口服务可以接收任何多个的客户端请求，每一个客户端请求都会执行大量的后台操作，比如查询数据库，查询缓存等等，系统资源毕竟是有限的，当超过一定的客户端请求时候，最终服务会响应缓慢或者运行崩溃。
+
+我们可以借助于time模块的Tick来产生一个定时器来限制程序在一定时间内的访问, 我们的限速器允许每秒钟100个请求的接入，每次处理请求前都会从等待固定的时间（10ms）然后才处理请求，保证了单位时间内处理的最大个数。
+
+```golang
+requests := make(chan int, 500)
+for i := 0; i < 500; i++ {
+	requests <- i
+}
+close(requests)
+
+limiter := time.Tick(10 * time.Millisecond)
+
+for req := range requests {
+	<-limiter
+	fmt.Println("request", req, time.Now())
+}
+```
+
+现实情况下请求不会匀速的到来，有可能前半秒到达了90个，而后半秒则达到了10个，如果我们不去优化程序，整个的处理的平均时间就会被拉长，很多请求将处在等待的状态下，为了实现更好的处理，我们调整上面的程序假如一个参数来适应瞬时的请求增加的情况：
+
+```golang
+burstyLimiter := make(chan time.Time, 3)
+
+for i := 0; i < 3; i++ {
+	burstyLimiter <- time.Now()
+}
+go func() {
+	for t := range time.Tick(200 * time.Millisecond) {
+		burstyLimiter <- t
+	}
+}()
+
+burstyRequests := make(chan int, 5)
+for i := 1; i <= 5; i++ {
+	burstyRequests <- i
+}
+close(burstyRequests)
+for req := range burstyRequests {
+	<-burstyLimiter
+	fmt.Println("request", req, time.Now())
+}
+```
+首先创建一个限速器，该限速器缓存的大小为3，创建完成后使用数据来填充该限速器
+启动一个goroutine来独立的每隔200ms时间来新增一个数据值到限速器，由于缺省的已经填充了3个不需要等待，所以再次调用请求处理的时候，前三个已经存在无需等待，直接被执行，后面的两个则等间隔时间后才能被执行。
+
+如果不想自己写ratelimiter的话可以参考网上的第三方库比如：[juju/ratelimit](https://github.com/juju/ratelimit),或者[golang.org/x/time/rate](https://godoc.org/golang.org/x/time/rate), 其中juju/ratelimit实现了token桶算法来完成限速的使用，这种算法也经常被用于网络数据传输的限速管理等场景。
 
 ##### 相关附录
 

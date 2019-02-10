@@ -138,6 +138,92 @@ var v  []int = make([]int, 100)
 > 使用make仅仅可以用在切片，数组和map类型以及channel类型上，返回的是类型而不是类型指针，如果需要指针的话使用取地址操作符即可。
 
 
+#### 7.4 结构体与接口
+
+Go语言中存在函数和方法的区别，一个方法指的是一个接收器声明的函数，接收器则指的是一个值或者指针或者结构体对象等，一个类型所有的方法称之为这个类型的方法集合。比如下面的结构体和类型声明，我们创建的结构体User包含一个方法Notify(),而正是实施了该方法使得满足了Notifier接口，可以被SendNotification作为参数调用。
+
+```golang
+// User ...
+type User struct {
+	Name  string
+	Email string
+}
+
+// Notify will send a email to the caller
+func (u *User) Notify() error {
+	fmt.Printf("Send notify to %s(%s)\n", u.Name, u.Email)
+	return nil
+}
+
+// Notifier include a simple Notify function
+type Notifier interface {
+	Notify() error
+}
+
+func SendNotification(n Notifier) error {
+	return n.Notify()
+}
+
+```
+为了测试代码是否可以正常工作，我们编写了两个User的实现分别如下：
+```go
+mike := User{"Mike", "mike@example.com"}
+mike.Notify()
+
+tom := &User{"tom", "tom@example.com"}
+tom.Notify()
+```
+上面不管是结构体类型还是结构体指针类型，都可以顺利的调用Notify得益于Go语言编译器的优化处理，自动的进行取地址操作，我们再来看下接口的调用方式,假如我们传递的是结构体对象，则运行时将报错导致程序的退出，因为结构体对象本身并没有实现Notifier接口，而是结构体指针类型满足，所以这是无法被强制转换的，必须满足的条件。
+```go
+mike := User{"Mike", "mike@example.com"}
+SendNotification(&mike)
+tom := &User{"tom", "tom@example.com"}
+SendNotification(tom)
+```
+#### 7.5 结构体组合
+
+假如一个结构体本身包含另外一个结构体，我们称之为结构体的组合（Composition），组合的方式可以是匿名或者是命名方式，区别在于是否给组合的结构体提供一个确定的名称，比如下面的则是一个匿名方式的示例
+
+```go
+type Admin struct {
+	User
+	Level string
+}
+```
+Admin结构体包含了一个User对象，对于嵌入的User类型的方法集合，现在变成了Admin的方法集合一部分，但是当我们调用的时候，接收器仍旧指的是内部的User,而不是外层的Admin. 因此我们的Admin包含了User的Notify方法，但是同时要明白最下面的两个语句的调用是完全等效的。
+
+```golang
+admin := &Admin{
+	User: User{
+		"Mike", "mike@example.com",
+	},
+	Level: "superadmin",
+}
+SendNotification(admin)
+admin.Notify()
+admin.User.Notify()
+// Send notify to Mike(mike@example.com)
+// Send notify to Mike(mike@example.com)
+// Send notify to Mike(mike@example.com)
+```
+假如Admin本身也是实现了Notify方法则会出现什么情况呢，当我们重新调用上面的函数和语句的时候输出结果如何？
+
+```go
+func (admin *Admin) Notify() error {
+	fmt.Printf("Admin send notify to %s(%s)\n", admin.Name, admin.Email)
+	return nil
+}
+```
+
+重新调用后的输出结构体如下，Go语言将根据类型本身的实现优先进行选择，假如Admin实现了Notify方法则不管是接口参数或者直接调用的时候都会优先选择Admin自身实现，除非显式的调用内部的组合类型实现调用。
+ 
+```go
+// Admin send notify to Mike(mike@example.com)
+// Admin send notify to Mike(mike@example.com)
+// Send notify to Mike(mike@example.com)
+```
+
+
 #### 附录
 
 ##### 1. Go语言是否是面向对象的语言

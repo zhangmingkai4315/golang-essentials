@@ -39,7 +39,7 @@ func (b Doctor) speak() string {
 
 #### 5.2 类型断言
 
-我们可以对于不同的类型利用接口的方式进行统一处理，比如设置传递参数为接口类型，任何符合接口规范的都可以传递到函数中进行处理, 代码如下， 同时利用类型断言和类型转换，我们可以很方便的进行细粒度的类型划分和处理。
+我们可以对于不同的类型利用接口的方式进行统一处理，比如设置传递参数为接口类型，任何符合接口规范的都可以传递到函数中进行处理, 同时利用类型断言和类型转换，我们可以很方便的进行细粒度的类型划分和处理。
 
 ```go
 func Say(h human) {
@@ -92,7 +92,7 @@ func main() {
 // this is a string message :this is mike
 
 ```
-ShowStringMessage函数中使用类型断言的方式，对于一个interface类型进行强制转换，如果转换成功则获得转换后的类型，以及ok=true,否则则转换失败返回ok=false,如果不进行返回值判断，则可能导致运行时的错误。
+ShowStringMessage函数中使用类型断言的方式，对于一个interface类型进行强制转换，如果转换成功则获得转换后的类型，以及ok=true,否则则转换失败返回ok=false,**如果不进行返回值判断，则可能导致运行时的错误**。
 
 #### 5.3 实现sort接口
 
@@ -137,7 +137,45 @@ func (s Sequence) String() string {
 ```
 
 > 任何类型都满足interface{}， 因此才使得fmt.Println()这样的函数可以接收任何的类型输入
->
 > 函数的定义**func Println(a ...interface{}) (n int, err error)**， 借助于... 可以接收任意数量的参数输入。
 
 参考：https://www.ardanlabs.com/blog/2015/09/composition-with-go.html
+
+
+#### 5.4 HTTP接口
+
+在Golang的标准库http模块中，定义了一个接口类型Handler，任何满足Handler接口的都可以来处理HTTP请求，这也在web编程中经常会遇到的一个接口实现，该接口的定义如下：
+
+```golang
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+```
+
+其中的ResponseWriter也是一个接口类型，Request则是客户端传递的请求的结构体对象。因此我们可以通过满足Handler接口来实现一个自己的Http处理器, 下面的代码我们利用接口的方式来是实现一个自增计数器的HTTP接口，由于ResponseWriter满足io.Writer接口,我们可以直接使用fmt.Fprintf来将数据传递给ResponseWriter，实现http的响应的返回。
+
+
+```golang
+import (
+	"fmt"
+	"net/http"
+)
+
+type Counter struct {
+	n int
+}
+
+func (c *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	c.n++
+	fmt.Fprintf(w, "Counter=%d\n", c.n)
+}
+
+func main() {
+	c := new(Counter)
+	http.Handle("/counter", c)
+	http.ListenAndServe("127.0.0.1:8080", nil)
+}
+
+```
+通过上述代码我们可以启动一个web服务器，并监听在127.0.0.1:8080端口上,如果想要查看web的响应可以通过访问http://127.0.0.1:8080/counter来检查是否正确。
+

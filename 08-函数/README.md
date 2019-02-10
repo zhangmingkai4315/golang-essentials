@@ -388,7 +388,7 @@ func main() {
 
 #### 8.9 init函数
 
-init函数是Go语言的一种特殊的函数，该函数可以存在任何的源文件中，如果在主main函数文件中，则会在全局变量声明完成后直接执行，而不需要等main函数执行，并且该函数允许多个init函数同时存在。使用init函数可以用来进行主程序参数的管理，初始化操作（一些数据库的初始化经常使用）等。
+init函数是Go语言的一种特殊的函数，该函数可以存在任何的源文件中，如果在主main函数文件中，则会在全局变量声明完成后直接执行，而不需要等main函数执行，并且该函数允许多个init函数同时存在。使用init函数可以用来进行主程序参数的管理，初始化操作（一些数据库的初始化经常使用）等。下面是使用init函数的基本用法示例：
 
 ```golang
 var (
@@ -418,5 +418,22 @@ func main() {
 // Start main function
 // 3 2
 
+```
+
+后期我们编写代码的时候可能会遇到如下的包导入方式：,这种导入方式就是利用init以及一些包本身初始化来实现的隐式导入，我们并没有使用mysql包中任何的对外的类型和函数，并且使用_将忽略编译器针对包导入而未使用的错误，使得程序得以顺利执行。
+```golang
+import "database/sql"
+import _ "github.com/go-sql-driver/mysql"
+
+db, err := sql.Open("mysql", "user:password@/dbname")
+```
+
+如果查看mysql的源代码可以看到如下的init调用，将一个包中定义的MySQLDriver结构体对象注册到sql对象上，供后面的程序使用。
+
+```golang
+// mysql/driver.go
+func init() {
+	sql.Register("mysql", &MySQLDriver{})
+}
 ```
 
