@@ -244,3 +244,75 @@ func main() {
 }
 
 ```
+
+#### 10.5 应用参数传递
+
+命令行程序中一般通过设置一些参数来允许动态的修改程序的执行行为，比如最简单的列举文件内容的ls命令，当我们输入```ls```的时候缺省会输出文件的名称，但是如果我们输入```ls -l```的时候则会输出详细的文件信息：
+
+```shell
+
+golang-essentials git/master*  
+❯ ls
+01-开发环境安装  04-基本类型           07-结构体  10-编写应用  13-错误处理  16-Web服务  README.md
+02-变量和类型    05-interface类型      08-函数    11-并发编程  14-程序文档  LICENSE
+03-控制流        06-数组切片和Map类型  09-指针    12-Channel   15-测试      public
+                                                                                                          
+golang-essentials git/master*  
+❯ ls -l
+total 92
+drwxrwxr-x  2 mingkai mingkai  4096 2月  11 09:30 01-开发环境安装
+drwxrwxr-x  8 mingkai mingkai  4096 2月  11 09:30 02-变量和类型
+drwxrwxr-x  8 mingkai mingkai  4096 2月  11 09:30 03-控制流
+drwxrwxr-x  7 mingkai mingkai  4096 2月  11 09:30 04-基本类型
+...
+
+```
+
+在go语言编写的程序中我们也可以借助于flags标准包来管理程序的参数，动态的调整程序的执行行为，使用flag包可以设定参数捕获和解析，并保存在本地的变量中，如下面的代码所示：
+
+```go
+import (
+	"flag"
+	"fmt"
+)
+var (
+	word    string
+	num     int
+	boolVal bool
+)
+
+func init() {
+	flag.StringVar(&word, "word", "foo", "an example of string")
+	flag.IntVar(&num, "number", 42, "an example of int")
+	flag.BoolVar(&boolVal, "bool", false, "an example of bool")
+}
+func main() {
+	flag.Parse()
+	fmt.Printf("word = %s\n", word)
+	fmt.Printf("number = %d\n", num)
+	fmt.Printf("bool = %t\n", boolVal)
+}
+
+```
+
+init函数我们在第8章函数中介绍过，用于main函数执行前调用的函数，我们可以使用该函数来完成程序的初始化和配置，flag.StringVar和flag.IntVar函数分别用于定义参数以及绑定对应的全局变量，flag.StringVar或flag.IntVar的第二个参数代表缺省的参数，第三个参数为该参数的相关描述信息。在main函数中我们需要调用flag.Parse来完成实际的参数捕获过程。
+
+我们可以不传递任何参数，直接运行程序，这时候所有的参数使用默认的值输出。
+
+```sh
+go run 10-编写应用/06-flags-app/main.go                                 
+word = foo
+number = 42
+bool = false
+```
+
+或者是传递数据到指定的参数中：
+```sh
+go run 10-编写应用/06-flags-app/main.go --word=hello --number=0 --bool=0
+word = hello
+number = 0
+bool = false
+```
+
+传递参数的方式除了上面的```--word=hello```这种方式外，还支持```--word hello```或者```-word hello```以及```-word=hello```的方式。同时针对Bool类型的参数我们可以输入0，f，F,FALSE,False,false来代表false，传递1，true,True,TRUE, t，T以及```--bool```这种不设置任何参数代表true。
+

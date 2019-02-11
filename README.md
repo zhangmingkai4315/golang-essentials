@@ -79,6 +79,8 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 - [10.2 官方源码程序](https://github.com/zhangmingkai4315/golang-essentials/tree/master/10-%E7%BC%96%E5%86%99%E5%BA%94%E7%94%A8#102-%E5%AE%98%E6%96%B9%E6%BA%90%E7%A0%81%E7%A8%8B%E5%BA%8F)
 - [10.3 排序操作](https://github.com/zhangmingkai4315/golang-essentials/tree/master/10-%E7%BC%96%E5%86%99%E5%BA%94%E7%94%A8#103-%E6%8E%92%E5%BA%8F%E6%93%8D%E4%BD%9C)
 - [10.4 使用Go语言编写密码加密和验证](https://github.com/zhangmingkai4315/golang-essentials/tree/master/10-%E7%BC%96%E5%86%99%E5%BA%94%E7%94%A8#104-%E4%BD%BF%E7%94%A8go%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86%E5%92%8C%E9%AA%8C%E8%AF%81)
+- [10.5 应用参数传递]()
+
 ### [11.并发编程](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B)
 
 - [11.1 并发不是并行](https://github.com/zhangmingkai4315/golang-essentials/tree/master/11-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B#111-%E5%B9%B6%E5%8F%91%E4%B8%8D%E6%98%AF%E5%B9%B6%E8%A1%8C)
@@ -126,14 +128,15 @@ Go语言的开发团队成员也都是一些知名的计算机行业专家其中
 
 ##### 技术博客
 
-https://www.ardanlabs.com/blog/
-http://www.doxsey.net
+- [ardanlabs](https://www.ardanlabs.com/blog/)
+- [doxsey](http://www.doxsey.net)
 
 ##### 书籍推荐：
-《Go语言程序设计》
-《Go In Action》
-《Go web编程》
+- 《Go语言程序设计》
+- 《Go In Action》
+- 《Go web编程》
 
 ##### 社区论坛
 
-https://forum.golangbridge.org/
+- [Golang中文网](https://studygolang.com/)
+- [Golangbridge](https://forum.golangbridge.org/)
