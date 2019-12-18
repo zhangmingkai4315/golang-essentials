@@ -4,8 +4,13 @@ import "fmt"
 
 func main() {
 	x := []int{1, 2, 3, 4, 5}
-	fmt.Printf("len(x)=%d\n", len(x))
-	// len(x)=5
+	fmt.Printf("len(x)=%d cap(x)=%d\n", len(x), cap(x))
+	// len(x)=5 cap(x)=5
+
+	subx := x[1:3]
+	fmt.Printf("len(subx)=%d cap(subx)=%d\n", len(subx), cap(subx))
+	// len(subx)=2 cap(subx)=4
+
 	for index, value := range x {
 		fmt.Printf("index=%d, value=%d\n", index, value)
 	}

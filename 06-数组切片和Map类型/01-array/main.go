@@ -14,4 +14,18 @@ func main() {
 
 	// showArray(x)
 	//  cannotuse x (type [10]int) as type [5]int
+
+	y := [...]int{10, 20, 30, 40}
+	z := [5]int{1: 20, 2: 20}
+
+	fmt.Println(y, z)
+	// [10 20 30 40] [0 20 20 0 0]
+
+	zCopy := [5]int{}
+
+	zCopy = z
+	zCopy[0] = 1
+	fmt.Println(z, zCopy)
+	// [0 20 20 0 0] [1 20 20 0 0]
+
 }
