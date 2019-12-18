@@ -352,6 +352,41 @@ for req := range burstyRequests {
 
 如果不想自己写ratelimiter的话可以参考网上的第三方库比如：[juju/ratelimit](https://github.com/juju/ratelimit),或者[golang.org/x/time/rate](https://godoc.org/golang.org/x/time/rate), 其中juju/ratelimit实现了token桶算法来完成限速的使用，这种算法也经常被用于网络数据传输的限速管理等场景。
 
+
+#### 12.7 Workers任务分发
+
+借助于goroutine的并发和channel的通信模式，我们可以实现任务的高效分发和执行管理。这里我们需要使用一个缓存channel来存放任务数据，多个workers实际上不同的goroutine来管理和接收channel中的数据，并执行。如果检测到channel已被关闭，则退出当前的worker goroutine。实例程序同时使用了waitgroup来防止程序的提前退出。
+
+```go
+func main() {
+	tasks := make(chan string, tasksNumber)
+	wg.Add(workersNumber)
+
+	for i := 0; i < workersNumber; i++ {
+		go func(workerID int) {
+			defer wg.Done()
+			for {
+				task, ok := <-tasks
+				if ok == false {
+					fmt.Println("task queue is empty , worker ", workerID, " will quit")
+					return
+				}
+				time.Sleep(time.Duration(rand.Int63n(100)) * time.Millisecond)
+				fmt.Printf("worker done the task : %s\n", task)
+			}
+		}(i)
+	}
+
+	for i := 0; i < tasksNumber; i++ {
+		tasks <- fmt.Sprintf("Tasks: %d", i)
+	}
+	close(tasks)
+
+	wg.Wait()
+}
+
+```
+
 ##### 相关附录
 
 - [Go语言经典语句](https://go-proverbs.github.io/)
