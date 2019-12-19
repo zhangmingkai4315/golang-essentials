@@ -140,14 +140,27 @@ var v  []int = make([]int, 100)
 
 #### 7.4 结构体与接口
 
-Go语言中存在函数和方法的区别，一个方法指的是一个接收器声明的函数，接收器则指的是一个值或者指针或者结构体对象等，一个类型所有的方法称之为这个类型的方法集合。比如下面的结构体和类型声明，我们创建的结构体User包含一个方法Notify(),而正是实施了该方法使得满足了Notifier接口，可以被SendNotification作为参数调用。
+Go语言中存在函数和方法的区别，一个方法指的是一个接收器声明的函数，接收器则指的是一个值或者指针或者结构体对象等，一个类型所有的方法称之为这个类型的方法集合。
 
-```golang
+对于结构体方法指的是直接绑定在结构体对象上的方法比如下面的操作，该操作将在每次调用notify函数的时候将user对象的副本传递到函数体内，因此会涉及到对象的复制，哪怕是我们创建了一个```uPtr = &User{}```的指针，在指针上直接调用uPtr.Notify()，实际编译器在执行的时候也是需要先取值，然后再复制对象传递到函数中。
+
+```go
 // User ...
 type User struct {
 	Name  string
 	Email string
 }
+// Notify will send a email to the caller
+func (u User) Notify() error {
+	fmt.Printf("Send notify to %s(%s)\n", u.Name, u.Email)
+	return nil
+}
+
+```
+因此为了减少复制，可以考虑使用指针作为方法的接收对象，我们定义结构体方法的时候如下面所示即可， 同时由于包含一个方法Notify(),实施了该方法使得满足了Notifier接口，可以被SendNotification作为参数调用，传递到SendNotifycation的对象也必须要是User指针才可以。
+
+```golang
+
 
 // Notify will send a email to the caller
 func (u *User) Notify() error {
@@ -221,6 +234,29 @@ func (admin *Admin) Notify() error {
 // Admin send notify to Mike(mike@example.com)
 // Admin send notify to Mike(mike@example.com)
 // Send notify to Mike(mike@example.com)
+```
+
+对于库中定义的结构体，嵌入的结构体如果存在大写的属性字段，是直接被提升到最外层可访问，也就是不管嵌入的结构体本身是否可以直接导出,尽管不能直接访问Admin.user对象，但是访问属性是没问题的。对于方法，如果外部结构体和内部结构体都实现了相同的方法，则默认是调用外部结构体的方法，如果需要调用内部的结构体方法则需要通过属性访问，对于结构体实现接口的方式和调用效果同样一致的。
+```go
+// ./lib/lib.go
+type user struct {
+	Name  string
+	Email string
+}
+
+type Admin struct {
+	user
+	Level string
+}
+
+// ./main.go
+admin := &lib.Admin{
+	Level: "superadmin",
+}
+admin.Name = "Mike"
+admin.Email = "example@example.com"
+fmt.Printf("%v", admin)
+//{{Mike example@example.com} superadmin}
 ```
 
 
